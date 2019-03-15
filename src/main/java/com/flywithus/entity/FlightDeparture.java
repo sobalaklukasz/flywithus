@@ -2,6 +2,7 @@ package com.flywithus.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
+@EqualsAndHashCode(exclude = "flight")
 public class FlightDeparture {
 
     @Id
