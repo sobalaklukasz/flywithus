@@ -1,5 +1,6 @@
 package com.flywithus.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @Entity
+@EqualsAndHashCode
 public class User {
 
     @Id

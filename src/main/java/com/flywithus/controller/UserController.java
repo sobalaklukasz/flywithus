@@ -5,10 +5,13 @@ import com.flywithus.dto.UserToAddDto;
 import com.flywithus.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -22,17 +25,24 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity addUser(@RequestBody UserToAddDto userToAddDto) {
+    public ResponseEntity addUser(@Valid @RequestBody UserToAddDto userToAddDto, BindingResult result) {
 
-        User userToAdd = new User();
-        userToAdd.setPassword(userToAddDto.getPassword());
-        userToAdd.setEmail(userToAddDto.getEmail());
+        if (result.hasErrors()) return ResponseEntity.badRequest().body("Email or password is not correct.");
+
         try {
-            userRepository.save(userToAdd);
+            userRepository.save(createUser(userToAddDto));
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body("User cannot be created.");
         }
+
         return ResponseEntity.ok().build();
+    }
+
+    private User createUser(UserToAddDto userToAddDto) {
+        User userToAdd = new User();
+        userToAdd.setPassword(userToAddDto.getPassword());
+        userToAdd.setEmail(userToAddDto.getEmail());
+        return userToAdd;
     }
 
 }

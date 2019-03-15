@@ -19,11 +19,7 @@ public class FlightController {
         this.flightRepository = flightRepository;
     }
 
-    @GetMapping
-    public ResponseEntity sendAllFlights() {
-
-        List<Flight> flights = flightRepository.findAll();
-        return ResponseEntity.ok().body(flights);
-    }
+//    @GetMapping
+//    public
 
 }
