@@ -10,7 +10,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "availableDepartures")
 public class Flight {
 
     @Id

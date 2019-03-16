@@ -1,4 +1,4 @@
-package com.flywithus.service.payment;
+package com.flywithus.api.payment;
 
 /**
  * Very simple API which allows to create payment request which can be used pay for ordered item.

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataset>
-    <User id="1" email="user1@mail.com" password="password"/>
-    <User id="2" email="user2@mail.com" password="password"/>
-</dataset>

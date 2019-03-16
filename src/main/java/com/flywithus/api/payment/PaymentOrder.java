@@ -1,4 +1,4 @@
-package com.flywithus.service.payment;
+package com.flywithus.api.payment;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.NonNull;
 public class PaymentOrder {
     
     @NonNull
-    private Long purchasedObjectId;
+    private long reservationId;
     @NonNull
-    private Long amountPlnToBePaid;
+    private int amountPlnToBePaid;
 }

@@ -1,6 +1,5 @@
 package com.flywithus.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +21,9 @@ public class AvailableDepartureSeat {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "flight_departure_id")
-    @JsonIgnore
     private FlightDeparture flightDeparture;
 
-    @Column(nullable = false)
-    private boolean reserved;
+    @ManyToOne
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
 }
