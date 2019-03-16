@@ -23,3 +23,8 @@ Password: sa
 click Connect
 
 Please note that this UI should be disabled on production environment.
+
+##How to use
+REST API is described using swagger: http://localhost:8080/swagger-ui.html
+
+By default application is using testdata from file: \flywithus\src\main\resources\initial-data.sql

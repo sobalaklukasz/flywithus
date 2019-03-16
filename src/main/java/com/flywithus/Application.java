@@ -7,7 +7,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootApplication
 @EnableScheduling
-@ActiveProfiles("prod")
 public class Application {
 
     public static void main(String... args) {
