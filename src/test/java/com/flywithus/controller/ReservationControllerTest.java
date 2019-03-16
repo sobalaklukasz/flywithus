@@ -1,17 +1,14 @@
 package com.flywithus.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flywithus.api.payment.PaymentRequest;
+import com.flywithus.dto.PaymentRequestDto;
 import com.flywithus.dto.ReservationDto;
-import com.flywithus.dto.UserToAddDto;
 import com.flywithus.entity.Reservation;
-import com.flywithus.entity.User;
 import com.flywithus.service.PaymentService;
 import com.flywithus.service.ReservationService;
 import com.flywithus.service.ReservationValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -54,7 +51,7 @@ public class ReservationControllerTest {
     @Test
     public void shouldReserve() throws Exception {
         Reservation reservation = new Reservation();
-        PaymentRequest expectedPaymentRequest = PaymentRequest.builder().isPaid(false).build();
+        PaymentRequestDto expectedPaymentRequestDto = PaymentRequestDto.builder().build();
         ReservationDto validReservation = ReservationDto.builder()
                 .isFastCheckIn(false)
                 .isRegisterUser(false)
@@ -62,12 +59,12 @@ public class ReservationControllerTest {
                 .build();
         when(reservationValidator.isValid(validReservation)).thenReturn(true);
         when(reservationService.reserveSeats(validReservation.getTicketIdsToReserve())).thenReturn(reservation);
-        when(paymentService.createPaymentRequest(reservation, validReservation.isRegisterUser(), validReservation.isFastCheckIn())).thenReturn(expectedPaymentRequest);
+        when(paymentService.createPaymentRequest(reservation, validReservation.isRegisterUser(), validReservation.isFastCheckIn())).thenReturn(expectedPaymentRequestDto);
 
         MvcResult mvcResult = this.mockMvc.perform(post("/reservations").content(mapper.writeValueAsString(validReservation)).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andReturn();
-        assertThat(mapper.readValue(mvcResult.getResponse().getContentAsString(), PaymentRequest.class)).isEqualTo(expectedPaymentRequest);
+        assertThat(mapper.readValue(mvcResult.getResponse().getContentAsString(), PaymentRequestDto.class)).isEqualTo(expectedPaymentRequestDto);
     }
 
     @Test
@@ -99,6 +96,6 @@ public class ReservationControllerTest {
     public void shouldCancelReservation() throws Exception {
         this.mockMvc.perform(delete("/reservations").content("100001").contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
-        verify(reservationService, times(1)).cancelReservation(eq(100001L));
+        verify(reservationService, times(1)).cancelReservationOnDemand(eq(100001L));
     }
 }

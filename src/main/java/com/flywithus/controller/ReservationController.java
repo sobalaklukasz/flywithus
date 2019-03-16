@@ -42,8 +42,7 @@ public class ReservationController {
 
     @DeleteMapping
     public ResponseEntity cancelReservation(@RequestBody long id) {
-        reservationService.cancelReservation(id);
+        reservationService.cancelReservationOnDemand(id);
         return ResponseEntity.ok().build();
     }
-
 }

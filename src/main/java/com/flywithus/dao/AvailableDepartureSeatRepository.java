@@ -8,12 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.Set;
+import java.util.List;
 
 @Repository
 public interface AvailableDepartureSeatRepository extends JpaRepository<AvailableDepartureSeat, Long> {
 
-    Set<AvailableDepartureSeat> findAvailableDepartureSeatsByReservationId(long reservationId);
+    List<AvailableDepartureSeat> findAvailableDepartureSeatsByReservationId(long reservationId);
 
     @Modifying
     @Query("UPDATE AvailableDepartureSeat SET reservation = null WHERE reservation.id = :id")

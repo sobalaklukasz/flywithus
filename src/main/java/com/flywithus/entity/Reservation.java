@@ -22,8 +22,8 @@ public class Reservation {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "reservation")
     private List<AvailableDepartureSeat> availableDepartureSeat;
 
-    @Column(nullable = false)
-    private boolean paid;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "reservation")
+    private Payment payment;
 
     @Column
     private Date expiringDate;

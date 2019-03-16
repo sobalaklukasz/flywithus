@@ -1,30 +1,25 @@
 package com.flywithus.service;
 
-import com.flywithus.api.payment.PaymentGateway;
-import com.flywithus.api.payment.PaymentOrder;
-import com.flywithus.api.payment.PaymentRequest;
+import com.flywithus.dto.PaymentRequestDto;
 import com.flywithus.entity.Reservation;
+import com.flywithus.processor.PaymentProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-// TODO: test
 public class PaymentService {
 
     private final PriceCalculator priceCalculator;
-    private final PaymentGateway paymentGateway;
+    private final PaymentProcessor paymentProcessor;
 
-    public PaymentService(PriceCalculator priceCalculator, PaymentGateway paymentGateway) {
+    @Autowired
+    public PaymentService(PriceCalculator priceCalculator, PaymentProcessor paymentProcessor) {
         this.priceCalculator = priceCalculator;
-        this.paymentGateway = paymentGateway;
+        this.paymentProcessor = paymentProcessor;
     }
 
-    public PaymentRequest createPaymentRequest(Reservation reservation, boolean isRegisterUser, boolean isFastCheckIn) {
+    public PaymentRequestDto createPaymentRequest(Reservation reservation, boolean isRegisterUser, boolean isFastCheckIn) {
         int price = priceCalculator.calculatePriceInPln(isRegisterUser, isFastCheckIn, reservation.getAvailableDepartureSeat());
-        PaymentOrder paymentOrder = PaymentOrder.builder()
-                .amountPlnToBePaid(price)
-                .reservationId(reservation.getId())
-                .build();
-
-        return paymentGateway.createPaymentRequest(paymentOrder);
+        return paymentProcessor.registerPaymentRequest(price, reservation);
     }
 }

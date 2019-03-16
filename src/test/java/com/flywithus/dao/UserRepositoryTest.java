@@ -5,7 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
+@Sql("classpath:/initial-test-data.sql")
 public class UserRepositoryTest {
 
     @Autowired
@@ -24,9 +27,9 @@ public class UserRepositoryTest {
     public void shouldFindAllUsers() {
         List<User> allUsers = userRepository.findAll();
 
-        assertThat(allUsers).extracting("id").containsExactlyInAnyOrder(2L, 3L);
-        assertThat(allUsers).extracting("email").containsExactlyInAnyOrder("user1@mail.com", "user2@mail.com");
-        assertThat(allUsers).extracting("password").containsExactlyInAnyOrder("password", "password");
+        assertThat(allUsers).extracting("id").containsExactlyInAnyOrder(1L, 2L, 3L);
+        assertThat(allUsers).extracting("email").containsExactlyInAnyOrder("logged@user.com", "user1@mail.com", "user2@mail.com");
+        assertThat(allUsers).extracting("password").containsExactlyInAnyOrder("password", "password", "password");
     }
 
     @Test

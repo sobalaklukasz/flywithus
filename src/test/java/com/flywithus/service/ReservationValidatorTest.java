@@ -46,7 +46,7 @@ public class ReservationValidatorTest {
 
         boolean valid = reservationValidator.isValid(ReservationDto.builder().ticketIdsToReserve(new HashSet<>(Arrays.asList(1L))).build());
 
-        assertThat(valid).isFalse();
+        assertThat(valid).isTrue();
     }
 
 }

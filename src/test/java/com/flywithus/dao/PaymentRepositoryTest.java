@@ -1,6 +1,7 @@
 package com.flywithus.dao;
 
-import com.flywithus.entity.Flight;
+import com.flywithus.entity.Payment;
+import com.flywithus.entity.Reservation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,20 +19,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ActiveProfiles("test")
 @Sql("classpath:/initial-test-data.sql")
-public class FlightRepositoryTest {
+public class PaymentRepositoryTest {
 
     @Autowired
-    private FlightRepository flightRepository;
+    private PaymentRepository paymentRepository;
 
     @Test
-    public void shouldFindFlights() {
-        Set<Flight> flights = flightRepository.findFlightByArrivalLocationAndDepartureLocation("Warszawa", "Wroclaw");
+    public void shouldFindOnlyIfPaidColumnIsFalse() {
+        List<Payment> payments = paymentRepository.findAllByPaidIsFalse();
 
-        assertThat(flights.size()).isEqualTo(1);
-        Flight flight = flights.iterator().next();
-        assertThat(flight).extracting(Flight::getDepartureLocation).isEqualTo("Wroclaw");
-        assertThat(flight).extracting(Flight::getArrivalLocation).isEqualTo("Warszawa");
-        assertThat(flight).extracting(Flight::getAvailableDepartures).isNotNull();
+        payments.forEach(payment -> assertThat(payment.isPaid()).isFalse());
     }
 
+    @Test
+    public void shouldUpdatePaidColumn() {
+        paymentRepository.setPaymentAsDone(10000001L);
+
+        Payment paymentAfter = paymentRepository.findOne(10000001L);
+
+        assertThat(paymentAfter.isPaid()).isTrue();
+    }
 }
